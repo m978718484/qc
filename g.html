@@ -2,14 +2,28 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
     <script language="javascript" type="text/javascript" src="jquery.min.js"></script>
     <title>挑战题</title>
+    <style type="text/css">
+    	html,body,div{ 
+			margin:0; 
+			padding:0; 
+			height:100%; 
+			position:relative; 
+		} 
+		.all-middle2{ 
+			top:50%; 
+			left:50%; 
+		} 
+    </style>
   </head>
    
   <body>
-    <center><p id="pid" style="font-size: 20px;"></p></center>
-	<center><input type="button" value="生成随机数" onclick="g();" style="width:100px;height: 50px" />
-    </center>
+		<center><p id="pid" style="font-size: 20px;"></p></center> 
+		<div class="all-middle2">   
+			<input type="button" value="生成随机数" onclick="g();" style="width:100px;height: 50px" />
+    	</div> 
     <script>
         function g() {
           var pid = document.getElementById('pid');
