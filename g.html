@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script language="javascript" type="text/javascript" src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
+    <title>挑战题</title>
+  </head>
+   
+  <body>
+    <center><p id="pid"></p></center>
+    <center><button onclick="g();">生成</button></center>
+    <script>
+        function g() {
+          var pid = document.getElementById('pid');
+          var arr = [];
+          for(var i=0;i<30;i++){
+              getx(arr);
+          }
+         pid.innerHTML = arr;
+        }
+        
+        function getx(arr){
+            for(var i=0;i>-1;i++){
+                var flag = true;
+                var num = Math.floor(Math.random()*50)+1;
+                for(var i in arr){
+                    if(arr[i] == num){
+                        flag= false;
+                        break;
+                    }
+                }
+                if(flag == true){
+                    console.log(num);
+                    arr.push(num);
+                    return;
+                }
+            }
+        }
+    </script>
+    </body>
+</html>
