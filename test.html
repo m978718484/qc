@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<meta charset="utf-8">
+	<script type="text/javascript" src="jquery-3.2.1.min.js" ></script>
+	//浮动窗口的显示隐藏是通过js实现的
+	<script type="text/javascript">
+	 /*显示浮动框*/
+	    function showCommentDiv(obj) {
+	        var top = $(obj).offset().top;
+	        var left = $(obj).offset().left + $(obj).width() - 7;
+	        $("#commentListDiv").css({'top':top + "px",'left':left+"px"}).show("slow");
+	    }
+
+	     function showThis(obj) {
+	        $(obj).show();
+	    }
+	    /*隐藏浮动框*/
+	    function hideCommentDiv() {
+	        $("#editCourseDiv").hide();
+	    }
+	    function hideThis(obj) {
+	        $(obj).hide();
+	    }
+	//获取选中的评语
+	    function getValue(obj) {  
+	       var selectId = obj.value;  
+	       var selectTitle = obj.title;  
+	       $("#teaMarkContent").val(selectTitle);
+	    }  
+
+	</script>
+</head>
+<body>
+<input type="text" class="textClass" name="jobSubmit.teaMarkContent" id="teaMarkContent"  /> 
+                 <input type="button" name="button" class="ButtonStyle" id="selectBtn" value="选择模板" onclick="showCommentDiv(this);" onmouseout="hideCommentDiv();"/>
+<div style="background-color: #23a2af;position:fixed; top:10%;left: 5%; width:300px; height:50px;">
+	<marquee onMouseOver="this.stop()" onMouseOut="this.start()" scrollamount="1" scrolldelay="7" direction="up">
+	<center><h3>系統維護停機通知</h3></center>
+
+	<p>  為提升系統性能及穩定性，雲端服務器將于本周末（7/1~7/3）進行切換升級，屆時系統將暫時無法訪問，預計7/4恢復正常使用，不便之處，敬請見諒！</p>
+	</marquee>
+</div>
+
+<div align="left" id="commentListDiv" onmouseover="showThis(this);" onmouseout="hideThis(this);" style="width:200px;height:200px;border:solid 1px #a1bece;position:absolute;z-index:10000;display:none;background-color:#EEF7EA;">
+       <p><b>基本评语：</b></p>
+            <table>
+                 <c:forEach items="${commentListJB}" var="comment">
+                    <tr>
+                        <td>
+                            <span style="white-space:nowrap;">
+                                 <input type="radio" name="comment" id="comment" value="${comment.id}" title="${comment.content}" onclick="getValue(this)"/>${comment.content}
+                             </span>
+                        </td>
+                    </tr>
+                  </c:forEach>
+            </table>
+    </div>
+</body>
+</html>
