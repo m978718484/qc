@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <script language="javascript" type="text/javascript" src="jquery.min.js"></script>
+    <title>挑战题</title>
+    <style type="text/css">
+    	html,body,div{ 
+			margin:0; 
+			padding:0; 
+			height:100%; 
+			position:relative; 
+		} 
+		.all-middle2{ 
+			top:50%; 
+			left:50%; 
+		} 
+    </style>
+  </head>
+   
+  <body>
+		<center><p id="pid" style="font-size: 20px;"></p></center> 
+		<div class="all-middle2">   
+			<input type="button" value="生成随机数" onclick="g();" style="width:100px;height: 50px" />
+    	</div> 
+    <script>
+        function g() {
+          var pid = document.getElementById('pid');
+          var arr = [];
+          for(var i=0;i<30;i++){
+              getx(arr);
+          }
+         pid.innerHTML = arr;
+        }
+        
+        function getx(arr){
+            for(var i=0;i>-1;i++){
+                var flag = true;
+                var num = Math.floor(Math.random()*50)+1;
+                for(var i in arr){
+                    if(arr[i] == num){
+                        flag= false;
+                        break;
+                    }
+                }
+                if(flag == true){
+                    console.log(num);
+                    arr.push(num);
+                    return;
+                }
+            }
+        }
+    </script>
+    </body>
+</html>
