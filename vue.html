@@ -1,0 +1,381 @@
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no">
+<script src="js/vue.js"></script>
+<script src="js/vue-resource.js"></script>
+<link rel="stylesheet" href="css/demo.css" />
+<style>
+	.static{
+		width: 200px;
+		height: 100px;
+		background: #ccc;
+	}
+
+	.activate{
+		color:red;
+	}
+
+	.error{
+		font-weight: 800;
+	}
+
+</style>
+<div id="app">
+  {{ message }}
+</div>
+
+<div id="app1">
+	<span v-bind:title="message">
+		鼠標懸停幾秒鐘查看此處動態綁定的提示信息！
+	</span>
+</div>
+
+<div id="app2">
+	<p v-if="seen">now you see me !</p>
+	<a :href="url" target="_blank">百度</a>
+</div>
+
+<div id="app3">
+	<div v-if="todos.length">
+		<ol>
+			<li v-for="todo in todos">
+				{{ todo.text }}
+			</li>
+		</ol>
+	</div>
+</div>
+
+<div id="app4">
+	<p>{{ message }}</p>
+	<button v-on:click="reverseMessage">逆转消息</button>
+</div>
+
+<div id="app5">
+	<p>{{ message }}</p>
+	<input v-model="message">
+</div>
+
+<div id="app6">
+	<ol>
+		<todo-item
+			v-for="item in groceryList"
+			v-bind:title="item.text"
+			v-bind:todo="item"
+			v-bind:key="item.id"
+		>
+		</todo-item>
+	</ol>
+</div>
+
+<div id="filterApp">
+	<p v-if="seen"> {{ message | capitalize }} </p>
+</div>
+
+<div id="cssApp">
+	<p class="static" v-bind:class="{ activate:isActivate,error:hasError }">Change my color</p>
+	<p v-bind:class="classObj">こんにちは</p>
+	<p v-bind:class="style">hello</p>
+	<p v-bind:class="[staticClass,activateClass,errorClasss]">ola</p>
+	<button @click="changeColor">click me</button>
+</div>
+
+<div id="objcss">
+	<p v-bind:style="objStyle">test me</p>
+	<p v-bind:style="[objStyle,bgStyle]">hello </p>
+</div>
+
+<div id="renderList">
+	<ol>
+		<li v-for="car in cars">
+			{{ car.name }}
+		</li>
+	</ol>
+	<ul>
+		<li v-for="(food,index) in foods">
+			{{ index }}---{{ food }}---{{ delicious }}
+		</li>
+	</ul>
+	<ul>
+		<li v-for="(value,key,index) in object">
+			{{ index }}.{{ key }}.{{ value }}
+		</li>
+	</ul>
+	<div>
+		<span v-for="n in 10" style="margin-left: :5px">{{n}}</span>
+		<span v-for="n in evenNumbers" style="margin-left: :5px">{{n}}</span>
+	</div>
+</div>
+
+<div id="loginData">
+	<button @click="getData">get data</button>
+	<div v-if="someData">
+		<p>{{ someData.location.lat }}</p>
+	</div>
+</div>
+
+<div id="appPageCount">
+    <ul class="pagination">
+        <li v-for="n in pageCount">
+            <a href="javascripit:void(0)" v-bind:class="activeNumber === n + 1 ? 'active' : ''">{{ n + 1 }}</a>
+        </li>
+    </ul>
+</div>
+
+<div id="vonce">
+	<span>{{ message }}</span>
+	<button v-bind:disabled="isButtonDisabled">button1</button>
+</div>
+
+<div v-html="rawHtml">
+	<a href="https://www.baidu.com">douban</a>
+</div>
+
+<div id="watch-example">
+  <p>
+    Ask a yes/no question:
+    <input v-model="question">
+    <img v-bind:src='image'>
+  </p>
+  <p>{{ answer }}</p>
+</div>
+
+<script src="https://unpkg.com/axios@0.12.0/dist/axios.min.js"></script>
+<script src="https://unpkg.com/lodash@4.13.1/lodash.min.js"></script>
+<script type="text/javascript">
+	var watchExampleVM = new Vue({
+		  el: '#watch-example',
+		  data: {
+		    question: '',
+		    answer: 'I cannot give you an answer until you ask a question!',
+		    image:''
+		  },
+		  watch: {
+		    // 如果 question 发生改变，这个函数就会运行
+		    question: function (newQuestion) {
+		      this.answer = 'Waiting for you to stop typing...'
+		      this.getAnswer()
+		    }
+		  },
+		  methods: {
+		    // _.debounce 是一个通过 lodash 限制操作频率的函数。
+		    // 在这个例子中，我们希望限制访问yesno.wtf/api的频率
+		    // ajax请求直到用户输入完毕才会发出
+		    // 学习更多关于 _.debounce function (and its cousin
+		    // _.throttle), 参考: https://lodash.com/docs#debounce
+		    getAnswer: _.debounce(
+		      function () {
+		        if (this.question.indexOf('?') === -1) {
+		          this.answer = 'Questions usually contain a question mark. ;-)'
+		          return
+		        }
+		        this.answer = 'Thinking...'
+		        var vm = this
+		        axios.get('https://yesno.wtf/api')
+		          .then(function (response) {
+		            vm.answer = _.capitalize(response.data.answer)
+		            vm.image = _.capitalize(response.data.image)
+		          })
+		          .catch(function (error) {
+		            vm.answer = 'Error! Could not reach the API. ' + error
+		          })
+		      },
+		      // 这是我们为用户停止输入等待的毫秒数
+		      500
+		    )
+		  }
+		})
+
+	var vonce = new Vue({
+		el:'#vonce',
+		data:{
+			message:'change mes not change span message !',
+			isButtonDisabled:false
+		}
+	})
+	var appPageCount = new Vue({
+		el:'#appPageCount',
+		data:{
+			activeNumber: 1,
+            pageCount: 10
+		}
+	})
+
+	var loginData = new Vue({
+            el: '#loginData',
+            data: {
+            	someData:''
+            },
+            methods:{
+      			getData : function(){
+          		this.$http.get('http://localhost:3000/getjson/testAPI').then((response) => {
+					this.someData = response.body.result
+          		}, (response) => {
+					this.error = response.error_code          			
+          			});
+		        }
+		    }
+        });
+
+	var renderList = new Vue({
+		el:'#renderList',
+		data:{
+			delicious:'delicious',
+			cars:[
+				{ name:'Benz' },
+				{ name:'BMW' }
+			],
+			foods:[
+				'tomato',
+				'patoto',
+				'ice cream',
+			],
+			object:{
+				name:'Benz',
+				age:'18'
+			},
+			numbers:[1,2,3,4,5,6,7,8,9,10],
+			counts:[1,2,3,4,5]
+		},
+		computed:{
+			evenNumbers:function(){
+				return this.numbers.filter(function(number){
+					return number%2===0
+				})
+			}
+		},
+		methods:{
+			odd:function(){
+				return counts.filter(function(count){
+					return count%2===1
+				})
+			}
+		}
+	})
+	var objcss = new Vue({
+		el:'#objcss',
+		data:{
+			objStyle:{
+				color:'green',
+				fontweight:8000
+			},
+			bgStyle:{
+				width: '200px',
+				height: '100px',
+				background:'#ccc'
+			}
+		}
+	})
+
+	var cssApp = new Vue({
+		el:"#cssApp",
+		data:{
+			isActivate:true,
+			hasError:true,
+			classObj:{
+				static:true,
+				activate:true,
+				error:true,
+			},
+			staticClass:'static',
+			activateClass:'activate',
+			errorClasss:'error'
+		},
+		computed:{
+			style:function(){
+				return {
+					activate:this.isActivate,
+					static:true,
+					error:this.hasError
+				}
+			}
+		},
+		methods:{
+			changeColor:function(){
+				this.isActivate = !this.isActivate
+			}
+		}
+	})
+
+	var filterApp = new Vue({
+		el:'#filterApp',
+		data:{
+			message:'Hello world!',
+			seen:true,
+		},
+		filters:{
+			capitalize:function(value){
+				if (!value) {
+					return ''
+				}
+				value = value.toString()
+				return value.charAt(0).toUpperCase() + value.slice(1)
+			}
+		}
+	})
+
+	Vue.component('todo-item',{
+		props:['todo'],
+		template:'<li>{{ todo.text }}</li>'
+	})
+
+	var app6 = new Vue({
+		el:"#app6",
+		data:{
+			groceryList:[
+				{ id:0,text:'蔬菜' },
+				{ id:1,text:'奶酪' },
+				{ id:2,text:'香蕉' },
+				// { id:3,text:'苹果' },
+				// { id:4,text:'芒果' },
+				// { id:5,text:'荔枝' },
+				// { id:6,text:'其他' }
+			]
+		}
+	})
+	var	app5 = new Vue({
+		el:"#app5",
+		data:{
+			message:"hello vue!"
+		}
+	})
+	var app4 = new Vue({
+		el:"#app4",
+		data:{
+			message:"hello Vue.js!"
+		},
+		methods:{
+			reverseMessage:function() {
+				// body...
+				this.message = this.message.split('').reverse().join('')
+			}
+		}
+	})
+	var app = new Vue({
+		el: '#app',
+		data: {
+			message: 'Hello Vue!'
+		}
+	})
+	var app1 = new Vue({
+		el:"#app1",
+		data:{
+			message:'頁面加載于' + new Date()
+		}
+	})
+	var	app2 = new Vue({
+		el:"#app2",
+		data:{
+			seen:true,
+			url:'https://www.baidu.com/'
+		}
+	})
+	var app3 = new Vue({
+		el:"#app3",
+		data:{
+			todos:[
+				{ text:"javascript" },
+				{ text:"Vue" },
+				{ text:"python" }
+			]
+		}
+	})
+</script>
